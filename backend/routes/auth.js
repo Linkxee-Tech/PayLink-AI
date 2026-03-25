@@ -163,7 +163,7 @@ router.post('/register-hospital', async (req, res) => {
 
     // --- INTERSWITCH BANK ACCOUNT VALIDATION ---
     try {
-        const accountValid = await interswitch.nameEnquiry(accountNumber, bankCode);
+        const accountValid = await interswitch.nameEnquiry(accountNumber, bankName);
         if (accountValid && accountValid.success === false) {
              console.warn('Bank validation failed, but allowed in sandbox');
         }

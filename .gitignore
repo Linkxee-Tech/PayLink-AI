@@ -25,7 +25,7 @@ build/
 .serverless/
 .fusebox/
 .vike/
-
+.env
 coverage/
 .nyc_output/
 

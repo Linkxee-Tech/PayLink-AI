@@ -49,10 +49,13 @@ const Home = () => {
           className="flex items-center justify-center gap-4"
         >
           <Link to="/register" className="btn-primary py-4 px-8 text-lg flex items-center gap-2 shadow-primary-500/20">
-            Get Started Now <ChevronRight size={20} />
+            Get Funded Now <ChevronRight size={20} />
           </Link>
-          <Link to="/hospital-register" className="btn-secondary py-4 px-8 text-lg hover:bg-primary-50">
-            Register as Hospital
+          <Link to="/login" className="btn-secondary py-4 px-8 text-lg border-2 border-primary-500 text-primary-600 hover:bg-primary-50">
+            Access Wallet
+          </Link>
+          <Link to="/hospital-register" className="btn-secondary py-4 px-8 text-lg opacity-60 hover:opacity-100 italic">
+            Healthcare Providers
           </Link>
         </motion.div>
       </section>

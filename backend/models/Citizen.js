@@ -8,6 +8,7 @@ const citizenSchema = new mongoose.Schema({
   phone: { type: String, required: true },
   dob: { type: Date, required: true },
   email: { type: String, required: true, unique: true },
+  password: { type: String, required: true },
   salary: { type: Number, default: 0 },
   umhn: { type: String, unique: true, index: true },
   walletBalance: { type: Number, default: 20000 },
@@ -15,5 +16,14 @@ const citizenSchema = new mongoose.Schema({
   otp: { type: String },
   otpExpires: { type: Date },
 }, { timestamps: true });
+
+citizenSchema.pre('save', async function(next) {
+  if (!this.isModified('password')) return next();
+  this.password = await bcrypt.hash(this.password, 10);
+});
+
+citizenSchema.methods.comparePassword = async function(candidatePassword) {
+  return await bcrypt.compare(candidatePassword, this.password);
+};
 
 module.exports = mongoose.model('Citizen', citizenSchema);

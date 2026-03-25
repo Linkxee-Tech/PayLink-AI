@@ -28,6 +28,7 @@ const Navbar = () => {
         
         {!user ? (
           <>
+            <Link to="/login" className="text-slate-600 hover:text-primary-600 font-bold uppercase text-xs tracking-widest">Login</Link>
             <Link to="/register" className="btn-secondary">Get UMHN</Link>
             <Link to="/hospital-login" className="btn-primary">Hospital Portal</Link>
           </>

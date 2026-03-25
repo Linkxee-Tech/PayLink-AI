@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const Citizen = require('../models/Citizen');
+const Transaction = require('../models/Transaction');
 
 const { createLog } = require('../utils/logger');
 const { sendOTP } = require('../utils/emailService');

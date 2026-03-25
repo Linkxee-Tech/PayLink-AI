@@ -1,13 +1,13 @@
-import { useState, useEffect } from 'react';
 import api from '../utils/api';
+import { useAuth } from '../context/AuthContext';
 import toast from 'react-hot-toast';
 import { Wallet, Activity, ArrowUpRight, Shield, Clock, Download, User, Landmark } from 'lucide-react';
 import { motion } from 'framer-motion';
 
 const CitizenDashboard = () => {
-  const [citizen, setCitizen] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const [emailQuery, setEmailQuery] = useState('');
+  const { user } = useAuth();
+  const [citizen, setCitizen] = useState(user);
+  const [loading, setLoading] = useState(false);
 
   const fetchProfile = async (email) => {
     setLoading(true);
@@ -21,24 +21,7 @@ const CitizenDashboard = () => {
     }
   };
 
-  if (!citizen) {
-    return (
-      <div className="max-w-md mx-auto py-20 text-center space-y-8">
-        <div className="bg-primary-50 w-20 h-20 rounded-full flex items-center justify-center text-primary-600 mx-auto">
-          <User size={40} />
-        </div>
-        <h2 className="text-3xl font-black text-black tracking-tight">Check Your Wallet</h2>
-        <p className="text-slate-500">Enter your registered email to view your insurance balance and UMHN.</p>
-        <div className="flex gap-2">
-          <input 
-            type="email" placeholder="your@email.com" className="input-field"
-            value={emailQuery} onChange={(e) => setEmailQuery(e.target.value)}
-          />
-          <button onClick={() => fetchProfile(emailQuery)} className="btn-primary">View</button>
-        </div>
-      </div>
-    );
-  }
+  if (!citizen) return null;
 
   return (
     <div className="max-w-4xl mx-auto space-y-10">

@@ -3,12 +3,12 @@ import Navbar from './components/Navbar';
 import Home from './pages/Home';
 import RegisterCitizen from './pages/RegisterCitizen';
 import LoginHospital from './pages/LoginHospital';
+import LoginCitizen from './pages/LoginCitizen';
 import RegisterHospital from './pages/RegisterHospital';
 import HospitalDashboard from './pages/HospitalDashboard';
 import CitizenDashboard from './pages/CitizenDashboard';
 import AdminDashboard from './pages/AdminDashboard';
 import { useAuth } from './context/AuthContext';
-
 import ProtectedRoute from './components/ProtectedRoute';
 
 function App() {
@@ -23,6 +23,7 @@ function App() {
             <Route path="/" element={<Home />} />
             <Route path="/register" element={<RegisterCitizen />} />
             <Route path="/hospital-login" element={<LoginHospital />} />
+            <Route path="/login" element={<LoginCitizen />} />
             <Route path="/hospital-register" element={<RegisterHospital />} />
             
             <Route path="/hospital-dashboard" element={
@@ -31,7 +32,11 @@ function App() {
               </ProtectedRoute>
             } />
             
-            <Route path="/citizen-dashboard" element={<CitizenDashboard />} />
+            <Route path="/citizen-dashboard" element={
+              <ProtectedRoute role="citizen">
+                <CitizenDashboard />
+              </ProtectedRoute>
+            } />
             <Route path="/admin" element={<AdminDashboard />} />
           </Routes>
         </main>

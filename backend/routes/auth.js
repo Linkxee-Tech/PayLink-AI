@@ -14,7 +14,7 @@ const interswitch = require('../utils/interswitchService');
 // @access  Public
 router.post('/register-citizen', async (req, res) => {
   try {
-    const { fullName, nin, bvn, phone, dob, email, salary } = req.body;
+    const { fullName, nin, bvn, phone, dob, email, salary, password } = req.body;
 
     // Check if citizen already exists
     let citizen = await Citizen.findOne({ $or: [{ nin }, { bvn }, { email }] });
@@ -41,6 +41,7 @@ router.post('/register-citizen', async (req, res) => {
       phone,
       dob,
       email,
+      password,
       salary: salary || 0,
       umhn,
       walletBalance: initialBalance,
@@ -95,6 +96,52 @@ router.post('/verify-citizen-otp', async (req, res) => {
     await citizen.save();
 
     res.json({ success: true, message: 'Identity verified successfully', data: citizen });
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
+});
+
+// @desc    Citizen Login
+// @route   POST /api/auth/citizen-login
+// @access  Public
+router.post('/citizen-login', async (req, res) => {
+  try {
+    const { email, password } = req.body;
+
+    const citizen = await Citizen.findOne({ email });
+    if (!citizen) {
+      return res.status(401).json({ success: false, message: 'Invalid credentials' });
+    }
+
+    const isMatch = await citizen.comparePassword(password);
+    if (!isMatch) {
+      return res.status(401).json({ success: false, message: 'Invalid credentials' });
+    }
+
+    const token = jwt.sign({ id: citizen._id, role: 'citizen' }, process.env.JWT_SECRET, {
+      expiresIn: '30d'
+    });
+
+    // Log Activity
+    await createLog({
+      action: 'login',
+      userType: 'citizen',
+      userId: citizen._id,
+      userModel: 'Citizen',
+      details: `Citizen ${citizen.fullName} logged in.`,
+      reference: citizen.umhn
+    });
+
+    res.json({
+      success: true,
+      token,
+      citizen: {
+        id: citizen._id,
+        fullName: citizen.fullName,
+        umhn: citizen.umhn,
+        walletBalance: citizen.walletBalance
+      }
+    });
   } catch (error) {
     res.status(500).json({ success: false, message: error.message });
   }

@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import api from '../utils/api';
 import toast from 'react-hot-toast';
 import { useAuth } from '../context/AuthContext';
-import { Shield, ArrowRight, User, IdCard, Phone, Mail, Calendar, Landmark } from 'lucide-react';
+import { Shield, ArrowRight, User, IdCard, Phone, Mail, Calendar, Landmark, Plus, Lock } from 'lucide-react';
 import { motion } from 'framer-motion';
 
 const RegisterCitizen = () => {
@@ -14,6 +14,7 @@ const RegisterCitizen = () => {
     phone: '',
     dob: '',
     email: '',
+    password: '',
     salary: ''
   });
   const [loading, setLoading] = useState(false);
@@ -191,6 +192,14 @@ const RegisterCitizen = () => {
               <div className="relative">
                 <Mail size={18} className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" />
                 <input type="email" name="email" required placeholder="john@example.com" className="input-field pl-14 py-3" onChange={handleChange} />
+              </div>
+            </div>
+
+            <div className="space-y-2">
+              <label className="text-sm font-bold text-slate-700 ml-1">SET ACCOUNT PASSWORD</label>
+              <div className="relative">
+                <Lock size={18} className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" />
+                <input type="password" name="password" required placeholder="••••••••" className="input-field pl-14 py-3" onChange={handleChange} />
               </div>
             </div>
 

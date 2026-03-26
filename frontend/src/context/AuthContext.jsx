@@ -1,18 +1,17 @@
-import { createContext, useState, useEffect, useContext } from 'react';
+import { useState } from 'react';
+import AuthContext from './auth-context';
 
-const AuthContext = createContext();
+const getStoredUser = () => {
+  try {
+    const storedUser = localStorage.getItem('paylink_user');
+    return storedUser ? JSON.parse(storedUser) : null;
+  } catch {
+    return null;
+  }
+};
 
 export const AuthProvider = ({ children }) => {
-  const [user, setUser] = useState(null);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    const storedUser = localStorage.getItem('paylink_user');
-    if (storedUser) {
-      setUser(JSON.parse(storedUser));
-    }
-    setLoading(false);
-  }, []);
+  const [user, setUser] = useState(getStoredUser);
 
   const login = (userData) => {
     setUser(userData);
@@ -26,10 +25,8 @@ export const AuthProvider = ({ children }) => {
   };
 
   return (
-    <AuthContext.Provider value={{ user, login, logout, loading }}>
+    <AuthContext.Provider value={{ user, login, logout, loading: false }}>
       {children}
     </AuthContext.Provider>
   );
 };
-
-export const useAuth = () => useContext(AuthContext);

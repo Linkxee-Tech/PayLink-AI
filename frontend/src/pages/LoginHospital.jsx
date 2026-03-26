@@ -1,9 +1,10 @@
 import { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import api from '../utils/api';
-import { useAuth } from '../context/AuthContext';
+import { useAuth } from '../context/useAuth';
 import toast from 'react-hot-toast';
 import { Lock, Mail, Building2, ArrowRight } from 'lucide-react';
+import FormField from '../components/FormField';
 
 const LoginHospital = () => {
   const [formData, setFormData] = useState({ email: '', password: '' });
@@ -39,37 +40,42 @@ const LoginHospital = () => {
             <Building2 size={48} />
           </div>
           <h1 className="text-4xl font-black text-black tracking-tighter">Provider Portal</h1>
-          <p className="text-slate-500 font-medium tracking-tight">Access federal emergency health infrastructure</p>
+          <p className="text-slate-500 font-medium tracking-tight">Verify emergency eligibility and manage treatment claims for registered patients</p>
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-6">
-          <div className="space-y-2">
-            <label className="text-xs font-black text-slate-400 uppercase tracking-widest ml-1">Official Email</label>
-            <div className="relative">
-              <Mail size={18} className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" />
-              <input 
-                type="email" name="email" required placeholder="admin@hospital.com" 
-                className="input-field pl-14 py-3" onChange={handleChange}
-              />
-            </div>
-          </div>
+          <FormField
+            type="email"
+            name="email"
+            label="Official Email"
+            labelClassName="text-xs font-black uppercase tracking-widest text-slate-400"
+            icon={Mail}
+            hint="Use the official facility email submitted during provider onboarding."
+            required
+            placeholder="admin@hospital.com"
+            autoComplete="email"
+            onChange={handleChange}
+          />
 
-          <div className="space-y-2">
-            <label className="text-xs font-black text-slate-400 uppercase tracking-widest ml-1">Password</label>
-            <div className="relative">
-              <Lock size={18} className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" />
-              <input 
-                type="password" name="password" required placeholder="••••••••" 
-                className="input-field pl-14 py-3" onChange={handleChange}
-              />
-            </div>
-          </div>
+          <FormField
+            type="password"
+            name="password"
+            label="Password"
+            labelClassName="text-xs font-black uppercase tracking-widest text-slate-400"
+            icon={Lock}
+            hint="Use your provider portal password."
+            required
+            minLength="8"
+            placeholder="••••••••"
+            autoComplete="current-password"
+            onChange={handleChange}
+          />
 
           <button 
             type="submit" disabled={loading}
             className="bg-accent-500 hover:bg-accent-600 text-white w-full py-5 rounded-2xl text-xl font-bold flex items-center justify-center gap-3 shadow-lg shadow-accent-500/20 transition-all active:scale-95 group"
           >
-            {loading ? 'Authenticating...' : 'Secure Access Login'}
+            {loading ? 'Authenticating...' : 'Open Provider Console'}
             {!loading && <ArrowRight size={22} className="group-hover:translate-x-2 transition-transform" />}
           </button>
         </form>

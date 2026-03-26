@@ -8,12 +8,9 @@ import RegisterHospital from './pages/RegisterHospital';
 import HospitalDashboard from './pages/HospitalDashboard';
 import CitizenDashboard from './pages/CitizenDashboard';
 import AdminDashboard from './pages/AdminDashboard';
-import { useAuth } from './context/AuthContext';
 import ProtectedRoute from './components/ProtectedRoute';
 
 function App() {
-  const { user } = useAuth();
-
   return (
     <Router>
       <div className="min-h-screen">
@@ -37,7 +34,11 @@ function App() {
                 <CitizenDashboard />
               </ProtectedRoute>
             } />
-            <Route path="/admin" element={<AdminDashboard />} />
+            <Route path="/admin" element={
+              <ProtectedRoute role="admin">
+                <AdminDashboard />
+              </ProtectedRoute>
+            } />
           </Routes>
         </main>
       </div>

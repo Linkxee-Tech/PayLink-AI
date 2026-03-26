@@ -4,6 +4,7 @@ import api from '../utils/api';
 import toast from 'react-hot-toast';
 import { Building2, Mail, Lock, FileText, Landmark, ArrowRight, MapPin, Map } from 'lucide-react';
 import { nigeriaData } from '../utils/nigeriaData';
+import FormField from '../components/FormField';
 
 const RegisterHospital = () => {
   const [formData, setFormData] = useState({
@@ -68,33 +69,55 @@ const RegisterHospital = () => {
                  <FileText size={16} /> Basic Information
                </h3>
                
-               <div className="space-y-2">
-                 <label className="text-sm font-bold text-black ml-1 uppercase text-[10px] tracking-wider">Facility Name</label>
-                 <div className="relative">
-                   <Building2 size={18} className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" />
-                   <input type="text" name="name" required placeholder="Lagos General Hospital" className="input-field pl-14" onChange={handleChange} />
-                 </div>
-               </div>
+               <FormField
+                 type="text"
+                 name="name"
+                 label="Facility Name"
+                 labelClassName="text-black uppercase text-[10px] tracking-wider"
+                 icon={Building2}
+                 hint="Use the official registered name of the hospital or clinic."
+                 required
+                 placeholder="Lagos General Hospital"
+                 autoComplete="organization"
+                 onChange={handleChange}
+               />
 
-               <div className="space-y-2">
-                 <label className="text-sm font-bold text-black ml-1 uppercase text-[10px] tracking-wider">License Number (MDCN)</label>
-                 <div className="relative">
-                   <FileText size={18} className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" />
-                   <input type="text" name="licenseNumber" required placeholder="MDCN/HOSP/..." className="input-field pl-14" onChange={handleChange} />
-                 </div>
-               </div>
+               <FormField
+                 type="text"
+                 name="licenseNumber"
+                 label="License Number (MDCN)"
+                 labelClassName="text-black uppercase text-[10px] tracking-wider"
+                 icon={FileText}
+                 hint="Enter the provider or facility licence exactly as issued."
+                 required
+                 placeholder="MDCN/HOSP/..."
+                 onChange={handleChange}
+               />
 
                <div className="space-y-2">
                  <label className="text-sm font-bold text-black ml-1 uppercase text-[10px] tracking-wider">Email & Security</label>
                  <div className="grid grid-cols-1 gap-4">
-                    <div className="relative">
-                      <Mail size={18} className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" />
-                      <input type="email" name="email" required placeholder="admin@hospital.com" className="input-field pl-14" onChange={handleChange} />
-                    </div>
-                    <div className="relative">
-                      <Lock size={18} className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" />
-                      <input type="password" name="password" required placeholder="Create Password" className="input-field pl-14" onChange={handleChange} />
-                    </div>
+                    <FormField
+                      type="email"
+                      name="email"
+                      icon={Mail}
+                      hint="This email will receive onboarding and provider access updates."
+                      required
+                      placeholder="admin@hospital.com"
+                      autoComplete="email"
+                      onChange={handleChange}
+                    />
+                    <FormField
+                      type="password"
+                      name="password"
+                      icon={Lock}
+                      hint="Use at least 8 characters for the provider portal password."
+                      required
+                      minLength="8"
+                      placeholder="Create Password"
+                      autoComplete="new-password"
+                      onChange={handleChange}
+                    />
                  </div>
                </div>
             </div>
@@ -105,33 +128,56 @@ const RegisterHospital = () => {
                  <MapPin size={16} /> Location Identification
                </h3>
 
-               <div className="grid grid-cols-2 gap-4">
-                  <div className="space-y-2">
-                    <label className="text-sm font-bold text-black ml-1 uppercase text-[10px] tracking-wider">State</label>
-                    <div className="relative">
-                      <Map size={18} className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none" />
-                      <select name="state" required className="input-field pl-14 appearance-none" onChange={handleChange}>
-                        <option value="">Select State</option>
-                        {states.map(s => <option key={s} value={s}>{s}</option>)}
-                      </select>
-                    </div>
-                  </div>
-                  <div className="space-y-2">
-                    <label className="text-sm font-bold text-black ml-1 uppercase text-[10px] tracking-wider">LGA</label>
-                    <div className="relative">
-                      <MapPin size={18} className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none" />
-                      <select name="lga" required className="input-field pl-14 appearance-none" onChange={handleChange} disabled={!formData.state}>
-                        <option value="">Select LGA</option>
-                        {lgas.map(l => <option key={l} value={l}>{l}</option>)}
-                      </select>
-                    </div>
-                  </div>
+               <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+                  <FormField
+                    as="select"
+                    name="state"
+                    label="State"
+                    labelClassName="text-black uppercase text-[10px] tracking-wider"
+                    icon={Map}
+                    hint="Select the state where the facility is physically located."
+                    required
+                    onChange={handleChange}
+                    value={formData.state}
+                  >
+                    <option value="">Select State</option>
+                    {states.map((state) => (
+                      <option key={state} value={state}>
+                        {state}
+                      </option>
+                    ))}
+                  </FormField>
+                  <FormField
+                    as="select"
+                    name="lga"
+                    label="LGA"
+                    labelClassName="text-black uppercase text-[10px] tracking-wider"
+                    icon={MapPin}
+                    hint="Choose the local government area for faster emergency routing."
+                    required
+                    onChange={handleChange}
+                    value={formData.lga}
+                    disabled={!formData.state}
+                  >
+                    <option value="">Select LGA</option>
+                    {lgas.map((lga) => (
+                      <option key={lga} value={lga}>
+                        {lga}
+                      </option>
+                    ))}
+                  </FormField>
                </div>
 
-               <div className="space-y-2">
-                 <label className="text-sm font-bold text-black ml-1 uppercase text-[10px] tracking-wider">Full Address</label>
-                 <textarea name="address" required placeholder="Street address, building name..." className="input-field min-h-[120px] py-4" onChange={handleChange}></textarea>
-               </div>
+               <FormField
+                 as="textarea"
+                 name="address"
+                 label="Full Address"
+                 labelClassName="text-black uppercase text-[10px] tracking-wider"
+                 hint="Include street, landmark, and any detail that helps emergency responders find the facility."
+                 required
+                 placeholder="Street address, building name..."
+                 onChange={handleChange}
+               />
             </div>
           </div>
 

@@ -2,9 +2,9 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import api from '../utils/api';
 import toast from 'react-hot-toast';
-import { useAuth } from '../context/AuthContext';
+import { useAuth } from '../context/useAuth';
 import { Shield, ArrowRight, User, IdCard, Phone, Mail, Calendar, Landmark, Plus, Lock } from 'lucide-react';
-import { motion } from 'framer-motion';
+import FormField from '../components/FormField';
 
 const RegisterCitizen = () => {
   const [formData, setFormData] = useState({
@@ -44,6 +44,10 @@ const RegisterCitizen = () => {
 
   const handleVerifyOtp = async (e) => {
     e.preventDefault();
+    if (otp.length !== 6) {
+      toast.error('Enter the full 6-digit verification code');
+      return;
+    }
     setLoading(true);
     try {
       const res = await api.post('/auth/verify-citizen-otp', { email: formData.email, otp });
@@ -60,11 +64,7 @@ const RegisterCitizen = () => {
 
   if (successData) {
     return (
-      <motion.div 
-        initial={{ opacity: 0, scale: 0.95 }}
-        animate={{ opacity: 1, scale: 1 }}
-        className="max-w-2xl mx-auto py-12"
-      >
+      <div className="max-w-2xl mx-auto py-12">
         <div className="card text-center space-y-8 p-12 bg-gradient-to-b from-white to-primary-50">
           <div className="flex items-center justify-center mx-auto relative group scale-110">
              <Shield size={80} className="text-primary-500 opacity-20 group-hover:opacity-40 transition-opacity" />
@@ -94,7 +94,7 @@ const RegisterCitizen = () => {
             Go to Home
           </button>
         </div>
-      </motion.div>
+      </div>
     );
   }
 
@@ -106,17 +106,22 @@ const RegisterCitizen = () => {
         </div>
         <h2 className="text-3xl font-black text-slate-900">Verify Your Identity</h2>
         <p className="text-slate-500">We sent a 6-digit verification code to <span className="font-bold text-slate-900">{formData.email}</span></p>
+        <p className="mx-auto max-w-md text-sm leading-6 text-slate-500">
+          Enter the code exactly as received. If the email does not arrive, confirm the address above before trying again.
+        </p>
         
         <form onSubmit={handleVerifyOtp} className="space-y-6">
           <input 
             type="text" 
             maxLength="6"
+            inputMode="numeric"
+            pattern="\d{6}"
             value={otp}
-            onChange={(e) => setOtp(e.target.value)}
+            onChange={(e) => setOtp(e.target.value.replace(/\D/g, ''))}
             placeholder="0 0 0 0 0 0" 
             className="text-center text-4xl font-black tracking-[1rem] py-6 rounded-3xl border-2 border-slate-100 focus:border-primary-500 w-full outline-none transition-all"
           />
-          <button type="submit" disabled={loading} className="btn-primary w-full py-4 text-xl">
+          <button type="submit" disabled={loading || otp.length !== 6} className="btn-primary w-full py-4 text-xl disabled:opacity-60">
             {loading ? 'Verifying...' : 'Complete Registration'}
           </button>
         </form>
@@ -154,73 +159,116 @@ const RegisterCitizen = () => {
       <div className="flex-1">
         <div className="card shadow-2xl p-8 border-primary-100">
           <form onSubmit={handleSubmit} className="space-y-5">
-            <div className="space-y-2">
-              <label className="text-sm font-bold text-slate-700 ml-1">FULL NAME (AS ON NIN)</label>
-              <div className="relative">
-                <User size={18} className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" />
-                <input type="text" name="fullName" required placeholder="John Doe" className="input-field pl-14 py-3" onChange={handleChange} />
-              </div>
+            <FormField
+              type="text"
+              name="fullName"
+              label="FULL NAME (AS ON NIN)"
+              icon={User}
+              hint="Enter your name exactly as it appears on your NIN record."
+              required
+              placeholder="John Doe"
+              autoComplete="name"
+              onChange={handleChange}
+            />
+
+            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+              <FormField
+                type="text"
+                name="nin"
+                label="NIN"
+                icon={IdCard}
+                hint="NIN must contain exactly 11 digits."
+                required
+                placeholder="11 digits"
+                inputMode="numeric"
+                maxLength="11"
+                minLength="11"
+                pattern="[0-9]{11}"
+                title="NIN must contain exactly 11 digits"
+                onChange={handleChange}
+              />
+              <FormField
+                type="text"
+                name="bvn"
+                label="BVN"
+                icon={IdCard}
+                hint="BVN must contain exactly 11 digits."
+                required
+                placeholder="11 digits"
+                inputMode="numeric"
+                maxLength="11"
+                minLength="11"
+                pattern="[0-9]{11}"
+                title="BVN must contain exactly 11 digits"
+                onChange={handleChange}
+              />
             </div>
 
-            <div className="grid grid-cols-2 gap-4">
-              <div className="space-y-2">
-                <label className="text-sm font-bold text-slate-700 ml-1">NIN</label>
-                <div className="relative">
-                  <IdCard size={18} className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" />
-                  <input type="text" name="nin" required placeholder="11 digits" className="input-field pl-14 py-3" onChange={handleChange} />
-                </div>
-              </div>
-              <div className="space-y-2">
-                <label className="text-sm font-bold text-slate-700 ml-1">BVN</label>
-                <div className="relative">
-                  <IdCard size={18} className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" />
-                  <input type="text" name="bvn" required placeholder="11 digits" className="input-field pl-14 py-3" onChange={handleChange} />
-                </div>
-              </div>
-            </div>
+            <FormField
+              type="tel"
+              name="phone"
+              label="PHONE NUMBER"
+              icon={Phone}
+              hint="Use an active Nigerian number so hospitals can reach you during emergencies."
+              required
+              placeholder="080 1234 5678"
+              autoComplete="tel"
+              inputMode="tel"
+              minLength="11"
+              onChange={handleChange}
+            />
 
-            <div className="space-y-2">
-              <label className="text-sm font-bold text-slate-700 ml-1">PHONE NUMBER</label>
-              <div className="relative">
-                <Phone size={18} className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" />
-                <input type="tel" name="phone" required placeholder="080 1234 5678" className="input-field pl-14 py-3" onChange={handleChange} />
-              </div>
-            </div>
+            <FormField
+              type="email"
+              name="email"
+              label="EMAIL ADDRESS"
+              icon={Mail}
+              hint="We will send your one-time verification code to this email."
+              required
+              placeholder="john@example.com"
+              autoComplete="email"
+              onChange={handleChange}
+            />
 
-            <div className="space-y-2">
-              <label className="text-sm font-bold text-slate-700 ml-1">EMAIL ADDRESS</label>
-              <div className="relative">
-                <Mail size={18} className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" />
-                <input type="email" name="email" required placeholder="john@example.com" className="input-field pl-14 py-3" onChange={handleChange} />
-              </div>
-            </div>
+            <FormField
+              type="password"
+              name="password"
+              label="SET ACCOUNT PASSWORD"
+              icon={Lock}
+              hint="Use at least 8 characters with a password you can remember easily."
+              required
+              minLength="8"
+              placeholder="••••••••"
+              autoComplete="new-password"
+              onChange={handleChange}
+            />
 
-            <div className="space-y-2">
-              <label className="text-sm font-bold text-slate-700 ml-1">SET ACCOUNT PASSWORD</label>
-              <div className="relative">
-                <Lock size={18} className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" />
-                <input type="password" name="password" required placeholder="••••••••" className="input-field pl-14 py-3" onChange={handleChange} />
-              </div>
-            </div>
+            <FormField
+              type="date"
+              name="dob"
+              label="DATE OF BIRTH"
+              icon={Calendar}
+              hint="This helps us validate your identity against official records."
+              required
+              className="text-slate-500"
+              onChange={handleChange}
+            />
 
-            <div className="space-y-2">
-              <label className="text-sm font-bold text-slate-700 ml-1">DATE OF BIRTH</label>
-              <div className="relative">
-                <Calendar size={18} className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" />
-                <input type="date" name="dob" required className="input-field pl-14 py-3 text-slate-500" onChange={handleChange} />
-              </div>
-            </div>
-
-            <div className="space-y-2">
-              <label className="text-sm font-bold text-slate-700 ml-1">MONTHLY SALARY (₦)</label>
-              <div className="relative">
-                <Landmark size={18} className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" />
-                <input type="number" name="salary" required placeholder="e.g. 100000" className="input-field pl-14 py-3" onChange={handleChange} />
-              </div>
-            </div>
-
+            <FormField
+              type="number"
+              name="salary"
+              label="MONTHLY SALARY (₦)"
+              icon={Landmark}
+              hint="Used only to estimate your emergency support eligibility tier."
+              required
+              placeholder="e.g. 100000"
+              inputMode="numeric"
+              min="0"
+              onChange={handleChange}
+            />
+            
             <button type="submit" disabled={loading} className="btn-primary w-full py-4 text-lg mt-4 disabled:opacity-50">
-              {loading ? 'Processing...' : 'Register & Claim Fund'}
+              {loading ? 'Processing...' : 'Register & Continue'}
             </button>
           </form>
         </div>

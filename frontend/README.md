@@ -1,16 +1,65 @@
-# React + Vite
+# PayLink-AI Frontend
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+This frontend powers the public website, citizen onboarding flow, provider onboarding flow, and the operational dashboards for PayLink-AI / NEMIS.
 
-Currently, two official plugins are available:
+## Stack
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+- React 19
+- Vite 8
+- Tailwind CSS 4
+- React Router 7
+- Axios
+- Framer Motion
+- Lucide React
+- React Hot Toast
 
-## React Compiler
+## Key Screens
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+- Landing page for the NEMIS emergency care platform
+- Citizen registration and OTP verification
+- Citizen sign-in and support dashboard
+- Provider registration and provider portal
+- Hospital claim verification dashboard
+- Admin operations dashboard
 
-## Expanding the ESLint configuration
+## Development
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+Install dependencies from the `frontend/` directory:
+
+```bash
+npm install
+```
+
+Start the Vite dev server:
+
+```bash
+npm run dev
+```
+
+Build for production:
+
+```bash
+npm run build
+```
+
+Run lint checks:
+
+```bash
+npm run lint
+```
+
+## Environment
+
+The frontend expects the API base URL from `VITE_API_URL`.
+
+If it is not set, the app falls back to:
+
+```txt
+http://localhost:5000/api
+```
+
+## Notes
+
+- Shared auth state lives in `src/context/`
+- Reusable UI form patterns live in `src/components/`
+- The frontend uses a medical-first visual direction built around calm blues, teals, and green support states

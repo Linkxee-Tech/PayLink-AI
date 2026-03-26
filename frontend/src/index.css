@@ -1,25 +1,42 @@
 @import "tailwindcss";
 
 @theme {
-  --color-primary-50: #e3f2fd;
-  --color-primary-100: #bbdefb;
-  --color-primary-200: #90caf9;
-  --color-primary-300: #64b5f6;
-  --color-primary-400: #42a5f5;
-  --color-primary-500: #1565C0; /* Trust Blue */
-  --color-primary-600: #1976d2;
-  --color-primary-700: #1565c0;
-  --color-primary-800: #0d47a1;
-  --color-primary-900: #0a2f6b;
-  --color-primary-950: #051a3d;
-  
-  --color-secondary-500: #2E7D32; /* Healing Green */
-  --color-secondary-600: #1b5e20;
-  
-  --color-accent-500: #00ACC1; /* Teal Accent */
-  
-  --color-surface: #F5F7FA;
-  --color-text-main: #263238;
+  --color-primary-50: #eef7fb;
+  --color-primary-100: #d8ecf7;
+  --color-primary-200: #b6d9ec;
+  --color-primary-300: #8bbfde;
+  --color-primary-400: #5ea2cc;
+  --color-primary-500: #2b81ad;
+  --color-primary-600: #216b92;
+  --color-primary-700: #1b5676;
+  --color-primary-800: #153f57;
+  --color-primary-900: #102f41;
+  --color-primary-950: #0a1d2a;
+
+  --color-secondary-50: #edf8f3;
+  --color-secondary-100: #d8eee4;
+  --color-secondary-200: #b5dcc9;
+  --color-secondary-300: #8fc9ad;
+  --color-secondary-400: #57b280;
+  --color-secondary-500: #2f8f5b;
+  --color-secondary-600: #247246;
+  --color-secondary-700: #1a5936;
+  --color-secondary-800: #133f27;
+  --color-secondary-900: #0d2c1b;
+
+  --color-accent-50: #e8f8fb;
+  --color-accent-100: #cceef5;
+  --color-accent-200: #9edbe9;
+  --color-accent-300: #6fc7dc;
+  --color-accent-400: #3aafc8;
+  --color-accent-500: #1b92ad;
+  --color-accent-600: #15758b;
+  --color-accent-700: #105d6f;
+  --color-accent-800: #0d4654;
+  --color-accent-900: #0a323d;
+
+  --color-surface: #f4f8fb;
+  --color-text-main: #1f3440;
 }
 
 :root {
@@ -28,25 +45,26 @@
 
 body {
   font-family: var(--font-inter);
-  @apply bg-surface text-text-main;
+  @apply bg-surface text-text-main antialiased;
+  background-image: linear-gradient(180deg, rgba(238, 247, 251, 0.96) 0%, rgba(244, 248, 251, 1) 38%, rgba(250, 252, 253, 1) 100%);
 }
 
 .glass {
-  @apply bg-white/70 backdrop-blur-md border border-white/20;
+  @apply border border-white/70 bg-white/85 backdrop-blur-xl shadow-[0_12px_40px_rgba(15,58,92,0.08)];
 }
 
 .btn-primary {
-  @apply px-6 py-3 bg-primary-500 text-white rounded-xl hover:bg-primary-600 transition-all duration-300 shadow-lg hover:shadow-primary-500/20 active:scale-95 font-bold;
+  @apply rounded-2xl bg-primary-600 px-6 py-3 font-bold text-white transition-all duration-300 shadow-[0_16px_40px_rgba(33,107,146,0.18)] hover:bg-primary-700 active:scale-95;
 }
 
 .btn-secondary {
-  @apply px-6 py-3 bg-white text-primary-600 border-2 border-primary-50 rounded-xl hover:border-primary-500 transition-all duration-300 font-bold;
+  @apply rounded-2xl border border-primary-100 bg-white/90 px-6 py-3 font-bold text-primary-700 shadow-sm transition-all duration-300 hover:border-primary-200 hover:bg-primary-50;
 }
 
 .input-field {
-  @apply w-full px-5 py-4 bg-white border-none rounded-xl focus:outline-none focus:ring-2 focus:ring-primary-500/10 focus:bg-white transition-all ring-1 ring-slate-200 placeholder:text-slate-400;
+  @apply w-full rounded-2xl border border-slate-200 bg-white px-5 py-4 text-slate-900 shadow-[0_1px_2px_rgb(15,23,42,0.03)] transition-all placeholder:text-slate-400 focus:border-primary-500 focus:outline-none focus:ring-4 focus:ring-primary-500/10;
 }
 
 .card {
-  @apply bg-white p-8 rounded-3xl border border-slate-100 shadow-[0_4px_20px_rgb(0,0,0,0.03)] hover:shadow-[0_8px_30px_rgb(0,0,0,0.06)] transition-all duration-500;
+  @apply rounded-[2rem] border border-white bg-white/95 p-8 shadow-[0_10px_40px_rgba(15,58,92,0.06)] transition-all duration-500 hover:shadow-[0_16px_48px_rgba(15,58,92,0.08)];
 }

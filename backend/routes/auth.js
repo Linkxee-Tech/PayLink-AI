@@ -94,6 +94,7 @@ router.post('/verify-citizen-otp', async (req, res) => {
     citizen.otp = undefined;
     citizen.otpExpires = undefined;
     await citizen.save();
+    console.log(citizen)
 
     res.json({ success: true, message: 'Identity verified successfully', data: citizen });
   } catch (error) {
@@ -210,10 +211,10 @@ router.post('/register-hospital', async (req, res) => {
 
     // --- INTERSWITCH BANK ACCOUNT VALIDATION ---
     try {
-        const accountValid = await interswitch.nameEnquiry(accountNumber, bankName);
-        if (accountValid && accountValid.success === false) {
-             console.warn('Bank validation failed, but allowed in sandbox');
-        }
+      const accountValid = await interswitch.nameEnquiry(accountNumber, bankName);
+      if (accountValid && accountValid.success === false) {
+        console.warn('Bank validation failed, but allowed in sandbox');
+      }
     } catch (e) { console.log('Interswitch skip'); }
 
     hospital = await Hospital.create({

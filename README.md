@@ -68,10 +68,15 @@ As the Project Lead for PayLink-AI, Muazu was responsible for driving the strate
 
 ---
 
-### [Name of Backend Developer]
+### [Idris Muazu Muhammad]
 **Backend Developer**
 
-*(Contribution details to be added: API design, MongoDB schema management, and Interswitch service integration.)*
+**Core Responsibilities & Achievements:**
+- **API Design & Architecture:** Designed and implemented a robust RESTful API using Node.js and Express 5, covering modules for Auth, Citizens, Hospitals, Claims, and Administration.
+- **Database Schema Management:** Created complex MongoDB models using Mongoose (Citizen, Hospital, Claim, Transaction, Log) to efficiently handle user profiles, medical histories, financial ledgers, and audit trails.
+- **Interswitch Integration:** Developed a dynamic Interswitch service (`interswitchService.js`) to handle bank account validation (Name Enquiry) and execute real-time claim disbursements to hospitals.
+- **Security & Authentication:** Implemented secure JWT-based, role-specific authentication, encrypted passwords with bcrypt, and built logic to prevent fraudulent emergency claims (e.g., 1-hour claim windows).
+- **Notification & Audit Systems:** Built an automated email notification system (OTP and payment confirmations) using Nodemailer and engineered a continuous audit logging mechanism for transparent tracking of every system action.
 
 ---
 

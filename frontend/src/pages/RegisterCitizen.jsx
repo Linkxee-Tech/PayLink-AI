@@ -50,7 +50,9 @@ const RegisterCitizen = () => {
     }
     setLoading(true);
     try {
+      console.log(otp)
       const res = await api.post('/auth/verify-citizen-otp', { email: formData.email, otp });
+      console.log(res)
       const citizenData = res.data.data;
       setSuccessData(citizenData);
       login({ ...citizenData, role: 'citizen' });
@@ -67,27 +69,27 @@ const RegisterCitizen = () => {
       <div className="max-w-2xl mx-auto py-12">
         <div className="card text-center space-y-8 p-12 bg-gradient-to-b from-white to-primary-50">
           <div className="flex items-center justify-center mx-auto relative group scale-110">
-             <Shield size={80} className="text-primary-500 opacity-20 group-hover:opacity-40 transition-opacity" />
-             <Plus size={30} className="absolute text-secondary-500 drop-shadow-[0_0_10px_rgba(46,125,50,0.3)]" />
+            <Shield size={80} className="text-primary-500 opacity-20 group-hover:opacity-40 transition-opacity" />
+            <Plus size={30} className="absolute text-secondary-500 drop-shadow-[0_0_10px_rgba(46,125,50,0.3)]" />
           </div>
           <h2 className="text-4xl font-black text-black">Welcome to PayLink-AI, {successData.fullName}!</h2>
           <p className="text-xl text-slate-600">Your Unique Medical Health Number (UMHN) has been generated.</p>
-          
+
           <div className="bg-white border-2 border-dashed border-primary-100 p-8 rounded-3xl shadow-sm">
             <span className="text-slate-400 font-mono mb-2 block uppercase tracking-widest text-[10px] font-black">Your UMHN</span>
             <span className="text-4xl font-mono font-black text-primary-600 selection:bg-primary-50">{successData.umhn}</span>
           </div>
 
           <div className="flex items-center justify-center gap-8 py-6 border-y border-slate-100">
-             <div className="text-center">
-                <span className="block text-sm text-slate-500 uppercase font-bold mb-1">Insurance Credit</span>
-                <span className="text-2xl font-black text-primary-900">₦{successData.walletBalance?.toLocaleString()}</span>
-             </div>
-             <div className="h-10 w-[1px] bg-slate-200"></div>
-             <div className="text-center">
-                <span className="block text-sm text-slate-500 uppercase font-bold mb-1">Status</span>
-                <span className="text-lg font-bold text-secondary-600 bg-secondary-50 px-3 py-1 rounded-full border border-secondary-100">Active</span>
-             </div>
+            <div className="text-center">
+              <span className="block text-sm text-slate-500 uppercase font-bold mb-1">Insurance Credit</span>
+              <span className="text-2xl font-black text-primary-900">₦{successData.walletBalance?.toLocaleString()}</span>
+            </div>
+            <div className="h-10 w-[1px] bg-slate-200"></div>
+            <div className="text-center">
+              <span className="block text-sm text-slate-500 uppercase font-bold mb-1">Status</span>
+              <span className="text-lg font-bold text-secondary-600 bg-secondary-50 px-3 py-1 rounded-full border border-secondary-100">Active</span>
+            </div>
           </div>
 
           <button onClick={() => navigate('/')} className="btn-primary w-full py-4 text-xl">
@@ -109,16 +111,16 @@ const RegisterCitizen = () => {
         <p className="mx-auto max-w-md text-sm leading-6 text-slate-500">
           Enter the code exactly as received. If the email does not arrive, confirm the address above before trying again.
         </p>
-        
+
         <form onSubmit={handleVerifyOtp} className="space-y-6">
-          <input 
-            type="text" 
+          <input
+            type="text"
             maxLength="6"
             inputMode="numeric"
             pattern="\d{6}"
             value={otp}
             onChange={(e) => setOtp(e.target.value.replace(/\D/g, ''))}
-            placeholder="0 0 0 0 0 0" 
+            placeholder="0 0 0 0 0 0"
             className="text-center text-4xl font-black tracking-[1rem] py-6 rounded-3xl border-2 border-slate-100 focus:border-primary-500 w-full outline-none transition-all"
           />
           <button type="submit" disabled={loading || otp.length !== 6} className="btn-primary w-full py-4 text-xl disabled:opacity-60">
@@ -138,7 +140,7 @@ const RegisterCitizen = () => {
         <p className="text-lg text-slate-600">
           By linking your NIN and BVN, you help us ensure that emergency funds reach real citizens instantly. One person, one health fund.
         </p>
-        
+
         <div className="space-y-4">
           {[
             "Instant Identity Verification",
@@ -266,7 +268,7 @@ const RegisterCitizen = () => {
               min="0"
               onChange={handleChange}
             />
-            
+
             <button type="submit" disabled={loading} className="btn-primary w-full py-4 text-lg mt-4 disabled:opacity-50">
               {loading ? 'Processing...' : 'Register & Continue'}
             </button>

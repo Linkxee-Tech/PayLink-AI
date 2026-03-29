@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
 import { Shield, Activity, HeartPulse, ChevronRight, CheckCircle, Plus } from 'lucide-react';
+import Footer from '../components/Footer';
 
 const Home = () => {
   const steps = [
@@ -108,6 +109,8 @@ const Home = () => {
           </div>
         </div>
       </section>
+
+      <Footer />
     </div>
   );
 };
